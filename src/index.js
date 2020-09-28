@@ -8,25 +8,52 @@ let objects = [];
 
 let mouseX = 0;
 let mouseY = 0;
-export let tracks = [];
-export const trackWidth = 80;
-export const trackHeight = 20;
-export let trackCols = 10;
-export const trackRows = 8;
+export const trackWidth = 40;
+export const trackHeight = 40;
+export let trackCols = 800 / trackWidth;
+export const trackRows = 600 / trackHeight;
 export const topGap = 3
 const trackGap = 4;
+const image = document.createElement('img')
+let imageLoaded = false
+const carSprites = []
+const carSpriteWidth = 200
+const carSpriteHeight = 500
+
+export const tracks = [
+  1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+  1,1,0,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,
+  1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,
+  1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
+  1,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,
+  1,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,
+  1,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,
+  1,0,2,0,1,1,1,1,1,1,0,1,1,1,0,0,0,0,1,1,
+  1,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,
+  1,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,
+  1,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,
+  1,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,1,1,
+  1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
+  1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,
+  1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+];
 
 (function setUp (document) {
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
   trackCols = canvas.width / trackWidth;
-  setTracksGrid()
+  // ball1 = new Ball(0, 0, 10, 'white', canvas)
+  image.onload = () => {
+    console.log('imageloaded')
+    imageLoaded = true
+    
+  }
+  image.src = 'src/cars_racer.svg'
+  setBall()
+
   setInterval(updateAll, 1000 / fps);
-  ball1 = new Ball(canvas.width / 2, canvas.height / 2, 10, undefined, canvas)
-  objects = [ ball1 ]
-  objects.forEach((x, index) => x.id = index)
   // Good for debugging position
-  canvas.addEventListener('mousemove', updateMouseMove)
+  // canvas.addEventListener('mousemove', updateMouseMove)
   window.addEventListener('keydown', keyDownDebug)
 })(document)
 
@@ -34,9 +61,12 @@ function keyDownDebug (e) {
   console.log(e.key)
   if (e.key === 'd') {
     console.log('tracks:', tracks)
+    setBall()
   }
   
 }
+
+
 
 function updateMouseMove (e) {
   const rect = canvas.getBoundingClientRect()
@@ -49,23 +79,41 @@ function updateMouseMove (e) {
   // ball1.speedY = -4
 }
 
-export function rowColIndex (col, row) {
+export function colRowIndex (col, row) {
   return col + trackCols * row
 }
 
-
-export function setTracksGrid () {
-  tracks = []
-  for (let eachRow = topGap; eachRow < trackRows; eachRow++) {
+function setBall () {
+  for (let eachRow = 0; eachRow < trackRows; eachRow++) {
     for (let eachCol = 0; eachCol < trackCols; eachCol++) {
-      tracks.push(1)
+      let index = colRowIndex(eachCol, eachRow)
+      if (tracks[index] === 2) {
+        const x = eachCol * trackWidth
+        const y = eachRow * trackHeight
+        ball1 = new Ball(x, y, 10, 'white', canvas, image)
+        tracks[index] = 0
+      }
     }
   }
 }
 
+
+// export function setTracksGrid () {
+//   for (let eachRow = 0; eachRow < trackRows; eachRow++) {
+//     for (let eachCol = 0; eachCol < trackCols; eachCol++) {
+//       tracks.push(1)
+//     }
+//   }
+// }
+
 function updateAll () {
   update();
   draw();
+}
+
+export function trackHit (index) {
+  console.log('trackhit', index)
+  tracks[index] = 0
 }
 
 
@@ -87,7 +135,7 @@ function update () {
 function draw () {
   drawRect(0, 0, canvas.width, canvas.height, 'black')
   drawTracks()
-  objects.forEach((x) => x.draw())
+  ball1.draw()
   // drawText(`x: ${mouseX}, y: ${mouseY}`, 50, 50, 'green')
 }
 
@@ -108,9 +156,11 @@ function drawTracks() {
   //   drawRect(i * trackWidth, i * trackHeight, trackWidth, trackHeight, 'blue')
   // }
 
-  for (let eachRow = topGap; eachRow < trackRows; eachRow++) {
+  for (let eachRow = 0; eachRow < trackRows; eachRow++) {
     for (let eachCol = 0; eachCol < trackCols; eachCol++) {
-      drawRect(eachCol * trackWidth, eachRow * trackHeight, trackWidth - 4, trackHeight - 4, 'blue')
+      if (tracks[colRowIndex(eachCol, eachRow)] === 1) {
+        drawRect(eachCol * trackWidth, eachRow * trackHeight, trackWidth - 4, trackHeight - 4, 'blue')
+      }
     }
   }
 }
