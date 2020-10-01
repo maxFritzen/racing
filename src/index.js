@@ -46,10 +46,18 @@ export const tracks = [
   image.onload = () => {
     console.log('imageloaded')
     imageLoaded = true
-    
+    // Images have gap approx one carSpriteWidth
+    const numberOfImages = Math.ceil(image.width / (carSpriteWidth * 2))
+    for (let i = 0; i < numberOfImages; i++) {
+      carSprites.push({ 
+        image: image, 
+        startX: (carSpriteWidth * 2) * i
+      })
+    }
+    console.log(carSprites)
+    setCar()
   }
   image.src = 'src/cars_racer.svg'
-  setBall()
 
   setInterval(updateAll, 1000 / fps);
   // Good for debugging position
@@ -61,7 +69,7 @@ function keyDownDebug (e) {
   console.log(e.key)
   if (e.key === 'd') {
     console.log('tracks:', tracks)
-    setBall()
+    setCar()
   }
   
 }
@@ -83,14 +91,14 @@ export function colRowIndex (col, row) {
   return col + trackCols * row
 }
 
-function setBall () {
+function setCar () {
   for (let eachRow = 0; eachRow < trackRows; eachRow++) {
     for (let eachCol = 0; eachCol < trackCols; eachCol++) {
       let index = colRowIndex(eachCol, eachRow)
       if (tracks[index] === 2) {
         const x = eachCol * trackWidth
         const y = eachRow * trackHeight
-        ball1 = new Ball(x, y, 10, 'white', canvas, image)
+        ball1 = new Ball(x, y, 10, 'white', canvas, carSprites[0])
         tracks[index] = 0
       }
     }

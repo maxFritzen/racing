@@ -121,8 +121,7 @@ export class Ball {
 
 
     if (this.sprite) {
-      // Då är det alltså 200,500 som jag behöver veta när new Player
-      this.canvasContext.drawImage(this.sprite, 0, 0, 200, 500, x, y, 20, 40)
+      this.canvasContext.drawImage(this.sprite.image, this.sprite.startX, 0, 200, 500, x, y, 20, 40)
     }
   }
 
