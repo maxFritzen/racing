@@ -98,7 +98,7 @@ function setCar () {
       if (tracks[index] === 2) {
         const x = eachCol * trackWidth
         const y = eachRow * trackHeight
-        ball1 = new Ball(x, y, 10, 'white', canvas, carSprites[0])
+        ball1 = new Ball(x, y, 20, 40, 'white', canvas, carSprites[0])
         tracks[index] = 0
       }
     }

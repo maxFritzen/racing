@@ -12,12 +12,13 @@ import {
 
 
 export class Ball {
-  constructor (x, y, w, color = 'white', canvas, sprite) {
+  constructor (x, y, w, h, color = 'white', canvas, sprite) {
     this.startX = x
     this.startY = y
     this.x = x
     this.y = y
     this.w = w
+    this.h = h
     this.canvas = canvas
     this.canvasContext = canvas.getContext('2d')
     this.color = color
@@ -30,8 +31,8 @@ export class Ball {
   }
 
   move () {
-    // this.x += this.speedX;
-    // this.y += this.speedY;
+    this.x += this.speedX;
+    this.y += this.speedY;
   }
 
   // trackHandler () {
@@ -116,12 +117,23 @@ export class Ball {
   }
 
   draw () {
-    const { x, y , w } = this
+    const { x, y, w, h} = this
     // drawCircle(x, y, w, this.color)
+    const centerX = x - w / 2
+    const centerY = y - h / 2
 
 
     if (this.sprite) {
-      this.canvasContext.drawImage(this.sprite.image, this.sprite.startX, 0, 200, 500, x, y, 20, 40)
+      this.canvasContext.drawImage(
+        this.sprite.image, 
+        this.sprite.startX, 
+        0, 
+        200, 
+        500, 
+        centerX, 
+        centerY, 
+        w, 
+        h)
     }
   }
 
