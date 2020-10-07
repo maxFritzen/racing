@@ -1,9 +1,8 @@
-import { Ball } from './ball.js'
-import { Paddle } from './paddle.js'
+import { Car } from './car.js'
 
 let canvas, canvasContext
 export var fps = 30
-let ball1
+let car1
 let objects = [];
 
 let mouseX = 0;
@@ -42,7 +41,7 @@ export const tracks = [
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
   trackCols = canvas.width / trackWidth;
-  // ball1 = new Ball(0, 0, 10, 'white', canvas)
+  // car1 = new Car(0, 0, 10, 'white', canvas)
   image.onload = () => {
     console.log('imageloaded')
     imageLoaded = true
@@ -81,10 +80,10 @@ function updateMouseMove (e) {
   const root = document.documentElement
   mouseX = e.clientX - rect.left - root.scrollLeft
   mouseY = e.clientY - rect.top- root.scrollTop
-  ball1.x = mouseX
-  ball1.y = mouseY
-  // ball1.speedX = 3
-  // ball1.speedY = -4
+  car1.x = mouseX
+  car1.y = mouseY
+  // car1.speedX = 3
+  // car1.speedY = -4
 }
 
 export function colRowIndex (col, row) {
@@ -98,7 +97,7 @@ function setCar () {
       if (tracks[index] === 2) {
         const x = eachCol * trackWidth
         const y = eachRow * trackHeight
-        ball1 = new Ball(x, y, 20, 40, 'white', canvas, carSprites[0])
+        car1 = new Car(x, y, 20, 40, 'white', canvas, carSprites[0])
         tracks[index] = 0
       }
     }
@@ -137,13 +136,13 @@ return a.y >= bTopEdgeY && // below the top of b
 }
 
 function update () {
-  ball1.update()
+  car1.update()
 }
 
 function draw () {
   drawRect(0, 0, canvas.width, canvas.height, 'black')
   drawTracks()
-  ball1.draw()
+  car1.draw()
   // drawText(`x: ${mouseX}, y: ${mouseY}`, 50, 50, 'green')
 }
 
@@ -157,6 +156,14 @@ export function drawCircle (x, y, radius, color) {
   canvasContext.beginPath();
   canvasContext.arc(x, y, radius, 0, Math.PI * 2);
   canvasContext.fill()
+}
+
+export function drawBitmapCenteredWithRotation (bitmap, x, y, angle) {
+  canvasContext.save()
+  canvasContext.translate(x, y)
+  canvasContext.rotate(angle)
+  canvasContext.drawImage(bitmap, -bitmap.width / 2, -bitmap.height / 2)
+  canvasContext.restore();
 }
 
 function drawTracks() {

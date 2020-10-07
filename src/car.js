@@ -7,11 +7,12 @@ import {
   trackHeight, 
   trackWidth, 
   topGap,
-  trackHit
+  trackHit,
+  drawBitmapCenteredWithRotation
  } from './index.js';
 
 
-export class Ball {
+export class Car {
   constructor (x, y, w, h, color = 'white', canvas, sprite) {
     this.startX = x
     this.startY = y
@@ -26,21 +27,22 @@ export class Ball {
     this.speedX = 5
     this.speedY = 5
     this.sprite = sprite
-
+    this.angle = 0
     this.id = 123
   }
 
   move () {
-    this.x += this.speedX;
-    this.y += this.speedY;
+    // this.x += this.speedX;
+    // this.y += this.speedY;
+    this.angle += 0.02
   }
 
   // trackHandler () {
-  //   const ballGridCol = Math.floor(this.x / trackWidth)
-  //   const ballGridRow = Math.floor(this.y / trackHeight) - topGap
-  //   const gridIndex = colRowIndex(ballGridCol, ballGridRow)
-  //   if ( ballGridCol >= 0 && ballGridCol < trackCols
-  //     && ballGridRow >= 0 && ballGridRow < trackRows
+  //   const carGridCol = Math.floor(this.x / trackWidth)
+  //   const carGridRow = Math.floor(this.y / trackHeight) - topGap
+  //   const gridIndex = colRowIndex(carGridCol, carGridRow)
+  //   if ( carGridCol >= 0 && carGridCol < trackCols
+  //     && carGridRow >= 0 && carGridRow < trackRows
   //     && tracks[gridIndex]
   //     ) {
   //       const { x: trackX, y: trackY, w: trackW, h: trackH, id } = tracks[gridIndex]
@@ -62,34 +64,34 @@ export class Ball {
 
   trackHandler () {
   
-    var ballBrickCol = Math.floor(this.x / trackWidth);
-    var ballBrickRow = Math.floor(this.y / trackHeight);
-    var brickIndexUnderBall = colRowIndex(ballBrickCol, ballBrickRow);
+    var carBrickCol = Math.floor(this.x / trackWidth);
+    var carBrickRow = Math.floor(this.y / trackHeight);
+    var brickIndexUnderCar = colRowIndex(carBrickCol, carBrickRow);
 
-    if(ballBrickCol >= 0 && ballBrickCol < trackCols &&
-      ballBrickRow >= 0 && ballBrickRow < trackRows) {
+    if(carBrickCol >= 0 && carBrickCol < trackCols &&
+      carBrickRow >= 0 && carBrickRow < trackRows) {
 
-      if(tracks[brickIndexUnderBall]) {
-        // trackHit(brickIndexUnderBall)
+      if(tracks[brickIndexUnderCar]) {
+        // trackHit(brickIndexUnderCar)
       
 
-        var prevBallX = this.x - this.speedX;
-        var prevBallY = this.y - this.speedY;
-        var prevBrickCol = Math.floor(prevBallX / trackWidth);
-        var prevBrickRow = Math.floor(prevBallY / trackHeight);
+        var prevCarX = this.x - this.speedX;
+        var prevCarY = this.y - this.speedY;
+        var prevBrickCol = Math.floor(prevCarX / trackWidth);
+        var prevBrickRow = Math.floor(prevCarY / trackHeight);
 
         var bothTestsFailed = true;
 
-        if(prevBrickCol != ballBrickCol) {
-          var adjBrickSide = colRowIndex(prevBrickCol, ballBrickRow);
+        if(prevBrickCol != carBrickCol) {
+          var adjBrickSide = colRowIndex(prevBrickCol, carBrickRow);
 
           if(tracks[adjBrickSide] === 0) {
             this.speedX *= -1;
             bothTestsFailed = false;
           }
         }
-        if(prevBrickRow !== ballBrickRow) {
-          var adjBrickTopBot = colRowIndex(ballBrickCol, prevBrickRow);
+        if(prevBrickRow !== carBrickRow) {
+          var adjBrickTopBot = colRowIndex(carBrickCol, prevBrickRow);
 
           if(tracks[adjBrickTopBot] === 0) {
             this.speedY *= -1;
@@ -97,7 +99,7 @@ export class Ball {
           }
         }
 
-        if(bothTestsFailed) { // armpit case, prevents ball from going through
+        if(bothTestsFailed) { // armpit case, prevents car from going through
           this.speedX *= -1;
           this.speedY *= -1;
         }
@@ -122,18 +124,34 @@ export class Ball {
     const centerX = x - w / 2
     const centerY = y - h / 2
 
-
+    var carX = Math.cos(this.angle) * 2;
+	  var carY = Math.sin(this.angle) * 2;
     if (this.sprite) {
+      console.log(x, y, w, h, this.sprite.startX, centerX, centerY,this.angle, 200/ Math.PI / 10)
+      this.canvasContext.save()
+      this.canvasContext.translate(x, y)
+      this.canvasContext.rotate(this.angle)
       this.canvasContext.drawImage(
         this.sprite.image, 
         this.sprite.startX, 
         0, 
         200, 
-        500, 
-        centerX, 
-        centerY, 
+        500,  
+        -w / 2, // dx
+        -h / 2, // dy
         w, 
         h)
+      // this.canvasContext.drawImage(
+      //   this.sprite.image, 
+      //   this.sprite.startX, 
+      //   0, 
+      //   200, 
+      //   500, 
+      //   centerX, 
+      //   centerY, 
+      //   w, 
+      //   h)
+        this.canvasContext.restore()
     }
   }
 
