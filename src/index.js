@@ -158,14 +158,6 @@ export function drawCircle (x, y, radius, color) {
   canvasContext.fill()
 }
 
-export function drawBitmapCenteredWithRotation (bitmap, x, y, angle) {
-  canvasContext.save()
-  canvasContext.translate(x, y)
-  canvasContext.rotate(angle)
-  canvasContext.drawImage(bitmap, -bitmap.width / 2, -bitmap.height / 2)
-  canvasContext.restore();
-}
-
 function drawTracks() {
   // for (let i = 0; i < tracks.length; i++) {
   //   drawRect(i * trackWidth, i * trackHeight, trackWidth, trackHeight, 'blue')

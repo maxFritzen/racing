@@ -7,8 +7,7 @@ import {
   trackHeight, 
   trackWidth, 
   topGap,
-  trackHit,
-  drawBitmapCenteredWithRotation
+  trackHit
  } from './index.js';
 
 
@@ -29,11 +28,13 @@ export class Car {
     this.sprite = sprite
     this.angle = 0
     this.id = 123
+    this.speed = 2
   }
 
   move () {
-    // this.x += this.speedX;
-    // this.y += this.speedY;
+    this.x += Math.cos(this.angle) * this.speed;
+	  this.y += Math.sin(this.angle) * this.speed;
+
     this.angle += 0.02
   }
 
@@ -72,38 +73,8 @@ export class Car {
       carBrickRow >= 0 && carBrickRow < trackRows) {
 
       if(tracks[brickIndexUnderCar]) {
+        this.speed *=-1
         // trackHit(brickIndexUnderCar)
-      
-
-        var prevCarX = this.x - this.speedX;
-        var prevCarY = this.y - this.speedY;
-        var prevBrickCol = Math.floor(prevCarX / trackWidth);
-        var prevBrickRow = Math.floor(prevCarY / trackHeight);
-
-        var bothTestsFailed = true;
-
-        if(prevBrickCol != carBrickCol) {
-          var adjBrickSide = colRowIndex(prevBrickCol, carBrickRow);
-
-          if(tracks[adjBrickSide] === 0) {
-            this.speedX *= -1;
-            bothTestsFailed = false;
-          }
-        }
-        if(prevBrickRow !== carBrickRow) {
-          var adjBrickTopBot = colRowIndex(carBrickCol, prevBrickRow);
-
-          if(tracks[adjBrickTopBot] === 0) {
-            this.speedY *= -1;
-            bothTestsFailed = false;
-          }
-        }
-
-        if(bothTestsFailed) { // armpit case, prevents car from going through
-          this.speedX *= -1;
-          this.speedY *= -1;
-        }
-
       } 
     } 
   }
@@ -130,7 +101,7 @@ export class Car {
       console.log(x, y, w, h, this.sprite.startX, centerX, centerY,this.angle, 200/ Math.PI / 10)
       this.canvasContext.save()
       this.canvasContext.translate(x, y)
-      this.canvasContext.rotate(this.angle)
+      this.canvasContext.rotate(this.angle + (90 * Math.PI / 180))
       this.canvasContext.drawImage(
         this.sprite.image, 
         this.sprite.startX, 
