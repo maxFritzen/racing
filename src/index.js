@@ -104,15 +104,6 @@ function setCar () {
   }
 }
 
-
-// export function setTracksGrid () {
-//   for (let eachRow = 0; eachRow < trackRows; eachRow++) {
-//     for (let eachCol = 0; eachCol < trackCols; eachCol++) {
-//       tracks.push(1)
-//     }
-//   }
-// }
-
 function updateAll () {
   update();
   draw();
@@ -159,10 +150,6 @@ export function drawCircle (x, y, radius, color) {
 }
 
 function drawTracks() {
-  // for (let i = 0; i < tracks.length; i++) {
-  //   drawRect(i * trackWidth, i * trackHeight, trackWidth, trackHeight, 'blue')
-  // }
-
   for (let eachRow = 0; eachRow < trackRows; eachRow++) {
     for (let eachCol = 0; eachCol < trackCols; eachCol++) {
       if (tracks[colRowIndex(eachCol, eachRow)] === 1) {

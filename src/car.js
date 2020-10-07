@@ -38,31 +38,6 @@ export class Car {
     this.angle += 0.02
   }
 
-  // trackHandler () {
-  //   const carGridCol = Math.floor(this.x / trackWidth)
-  //   const carGridRow = Math.floor(this.y / trackHeight) - topGap
-  //   const gridIndex = colRowIndex(carGridCol, carGridRow)
-  //   if ( carGridCol >= 0 && carGridCol < trackCols
-  //     && carGridRow >= 0 && carGridRow < trackRows
-  //     && tracks[gridIndex]
-  //     ) {
-  //       const { x: trackX, y: trackY, w: trackW, h: trackH, id } = tracks[gridIndex]
-  //       this.color = 'green'
-        
-  //       const hitBotttom = this.y - this.speedY >= trackY + trackH
-  //       const hitTop = this.y - this.speedY <= trackY && !hitBotttom
-  //       const hitRight = this.x - this.speedX >= trackX + trackW
-  //       const hitLeft = this.x - this.speedX <= trackX
-  //       if (hitRight || hitLeft) {
-  //         this.speedX *= -1
-  //       }
-  //       if (hitTop || hitBotttom) {
-  //         this.speedY *= -1
-  //       }
-
-  //     }
-  // }
-
   trackHandler () {
   
     var carBrickCol = Math.floor(this.x / trackWidth);
@@ -91,37 +66,22 @@ export class Car {
 
   draw () {
     const { x, y, w, h} = this
-    // drawCircle(x, y, w, this.color)
-    const centerX = x - w / 2
-    const centerY = y - h / 2
 
-    var carX = Math.cos(this.angle) * 2;
-	  var carY = Math.sin(this.angle) * 2;
     if (this.sprite) {
-      console.log(x, y, w, h, this.sprite.startX, centerX, centerY,this.angle, 200/ Math.PI / 10)
       this.canvasContext.save()
       this.canvasContext.translate(x, y)
       this.canvasContext.rotate(this.angle + (90 * Math.PI / 180))
       this.canvasContext.drawImage(
         this.sprite.image, 
         this.sprite.startX, 
-        0, 
-        200, 
-        500,  
+        0, // start Y
+        200, // width of original image
+        500,  // height of original image
         -w / 2, // dx
         -h / 2, // dy
         w, 
         h)
-      // this.canvasContext.drawImage(
-      //   this.sprite.image, 
-      //   this.sprite.startX, 
-      //   0, 
-      //   200, 
-      //   500, 
-      //   centerX, 
-      //   centerY, 
-      //   w, 
-      //   h)
+
         this.canvasContext.restore()
     }
   }
