@@ -26,16 +26,96 @@ export class Car {
     this.speedX = 5
     this.speedY = 5
     this.sprite = sprite
-    this.angle = 0
     this.id = 123
-    this.speed = 2
+    
+    this.angle = 0
+    this.speed = 0
+    this.drive = false
+    this.reverse = false
+    this.steerLeft = false
+    this.steerRight = false
+    this.brake = false
   }
 
   move () {
+    this.speed *= 0.95
+    
+    if (this.drive) {
+      this.speed += 0.8
+    }
+
+    if (this.reverse) {
+      this.speed -= 0.1
+    }
+
+    if (this.steerLeft) {
+      
+      if (this.speed > 3) {
+        this.angle = this.angle - 0.2 / (this.speed / 4)
+        
+      } else if (this.speed !== 0) {
+        this.angle = this.angle - 0.2
+      }
+    
+    }
+
+    if (this.steerRight) {
+      if (this.speed > 3) {
+        this.angle = this.angle + 0.2 / (this.speed / 4)
+      } else if (this.speed !== 0) {
+        this.angle = this.angle + 0.2
+      }
+      
+    }
+
+    if (this.brake) {
+      this.speed *= 0.9
+    }
+
     this.x += Math.cos(this.angle) * this.speed;
 	  this.y += Math.sin(this.angle) * this.speed;
+  }
 
-    this.angle += 0.02
+  addKeyListeners () {
+    document.addEventListener('keydown', this.keyDown)
+    document.addEventListener('keyup', this.keyUp)
+  }
+
+  keyDown = (e) => {
+    if (e.key === 'ArrowUp') {
+      this.drive = true
+    }
+    if (e.key === 'ArrowDown') {
+      this.reverse = true
+    }
+    if (e.key === 'ArrowLeft') {
+      this.steerLeft = true
+    }
+    if (e.key === 'ArrowRight') {
+      this.steerRight = true
+    }
+
+    if (e.code === 'Space') {
+      this.brake = true
+    }
+  }
+
+  keyUp = (e) => {
+    if (e.key === 'ArrowUp') {
+      this.drive = false
+    }
+    if (e.key === 'ArrowDown') {
+      this.reverse = false
+    }
+    if (e.key === 'ArrowLeft') {
+      this.steerLeft = false
+    }
+    if (e.key === 'ArrowRight') {
+      this.steerRight = false
+    } 
+    if (e.code === 'Space') {
+      this.brake = false
+    }
   }
 
   trackHandler () {
@@ -48,6 +128,9 @@ export class Car {
       carBrickRow >= 0 && carBrickRow < trackRows) {
 
       if(tracks[brickIndexUnderCar]) {
+        this.x -= Math.cos(this.angle) * this.speed;
+
+        this.y -= Math.sin(this.angle) * this.speed;
         this.speed *=-1
         // trackHit(brickIndexUnderCar)
       } 
@@ -58,10 +141,6 @@ export class Car {
     this.move()
 
     this.trackHandler()
-  }
-
-  collision () {
-    this.speedY *= -1
   }
 
   draw () {
