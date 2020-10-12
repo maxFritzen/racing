@@ -31,11 +31,15 @@ export const tracks = [
   1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
   1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
   1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
-  1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
+  1,1,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
   1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
   1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,
   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 ];
+
+export const playerStart = 2
+export const wall = 1
+export const road = 0
 // export const tracks = [
 //   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 //   1,1,0,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,
@@ -111,7 +115,7 @@ function setCar () {
   for (let eachRow = 0; eachRow < trackRows; eachRow++) {
     for (let eachCol = 0; eachCol < trackCols; eachCol++) {
       let index = colRowIndex(eachCol, eachRow)
-      if (tracks[index] === 2) {
+      if (tracks[index] === playerStart) {
         const x = eachCol * trackWidth
         const y = eachRow * trackHeight
         car1 = new Car(x, y, 20, 40, 'white', canvas, carSprites[0])
@@ -170,7 +174,7 @@ export function drawCircle (x, y, radius, color) {
 function drawTracks() {
   for (let eachRow = 0; eachRow < trackRows; eachRow++) {
     for (let eachCol = 0; eachCol < trackCols; eachCol++) {
-      if (tracks[colRowIndex(eachCol, eachRow)] === 1) {
+      if (tracks[colRowIndex(eachCol, eachRow)] === wall) {
         drawRect(eachCol * trackWidth, eachRow * trackHeight, trackWidth - 4, trackHeight - 4, 'blue')
       }
     }

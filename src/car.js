@@ -125,14 +125,14 @@ export class Car {
 
   trackHandler () {
   
-    var carBrickCol = Math.floor(this.x / trackWidth);
-    var carBrickRow = Math.floor(this.y / trackHeight);
-    var brickIndexUnderCar = colRowIndex(carBrickCol, carBrickRow);
+    var carGridCol = Math.floor(this.x / trackWidth);
+    var carGridRow = Math.floor(this.y / trackHeight);
+    var gridIndexUnderCar = colRowIndex(carGridCol, carGridow);
 
-    if(carBrickCol >= 0 && carBrickCol < trackCols &&
-      carBrickRow >= 0 && carBrickRow < trackRows) {
+    if(carGridCol >= 0 && carGridCol < trackCols &&
+      carGridRow >= 0 && carGridRow < trackRows) {
 
-      if(tracks[brickIndexUnderCar]) {
+      if(tracks[gridIndexUnderCar]) { // Hit a wall
         this.x -= Math.cos(this.angle) * this.speed;
 
         this.y -= Math.sin(this.angle) * this.speed;
