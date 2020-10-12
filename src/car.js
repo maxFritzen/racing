@@ -10,7 +10,6 @@ import {
   trackHit
  } from './index.js';
 
-
 export class Car {
   constructor (x, y, w, h, color = 'white', canvas, sprite) {
     this.startX = x
@@ -35,41 +34,47 @@ export class Car {
     this.steerLeft = false
     this.steerRight = false
     this.brake = false
+
+    this.drivePower = 0.8
+    this.decayValue = 0.95
+    this.reverseSpeed = 0.1
+    this.brakeSpeed = 0.9
+    this.turnRate = 0.2
   }
 
   move () {
-    this.speed *= 0.95
+    this.speed *= this.decayValue
     
     if (this.drive) {
-      this.speed += 0.8
+      this.speed += this.drivePower
     }
 
     if (this.reverse) {
-      this.speed -= 0.1
+      this.speed -= this.reverseSpeed
     }
 
     if (this.steerLeft) {
       
       if (this.speed > 3) {
-        this.angle = this.angle - 0.2 / (this.speed / 4)
+        this.angle -= this.turnRate / (this.speed / 4)
         
       } else if (this.speed !== 0) {
-        this.angle = this.angle - 0.2
+        this.angle -= this.turnRate
       }
     
     }
 
     if (this.steerRight) {
       if (this.speed > 3) {
-        this.angle = this.angle + 0.2 / (this.speed / 4)
+        this.angle += this.turnRate / (this.speed / 4)
       } else if (this.speed !== 0) {
-        this.angle = this.angle + 0.2
+        this.angle += this.turnRate
       }
       
     }
 
     if (this.brake) {
-      this.speed *= 0.9
+      this.speed *= this.brakeSpeed
     }
 
     this.x += Math.cos(this.angle) * this.speed;
