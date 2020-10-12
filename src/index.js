@@ -1,4 +1,5 @@
 import { Car } from './car.js'
+import { drawRect } from './common-graphics.js'
 
 let canvas, canvasContext
 export var fps = 30
@@ -39,7 +40,7 @@ export const tracks = [
 
 export const playerStart = 2
 export const wall = 1
-export const road = 0
+export const road = 0;
 // export const tracks = [
 //   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 //   1,1,0,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,
@@ -153,36 +154,18 @@ function update () {
 }
 
 function draw () {
-  drawRect(0, 0, canvas.width, canvas.height, 'black')
+  drawRect(canvasContext,0, 0, canvas.width, canvas.height, 'black')
   drawTracks()
   car1.draw()
   // drawText(`x: ${mouseX}, y: ${mouseY}`, 50, 50, 'green')
-}
-
-export function drawRect (x, y, w, h, color) {
-  canvasContext.fillStyle = color;
-  canvasContext.fillRect(x, y, w, h);
-}
-
-export function drawCircle (x, y, radius, color) {
-  canvasContext.fillStyle = color;
-  canvasContext.beginPath();
-  canvasContext.arc(x, y, radius, 0, Math.PI * 2);
-  canvasContext.fill()
 }
 
 function drawTracks() {
   for (let eachRow = 0; eachRow < trackRows; eachRow++) {
     for (let eachCol = 0; eachCol < trackCols; eachCol++) {
       if (tracks[colRowIndex(eachCol, eachRow)] === wall) {
-        drawRect(eachCol * trackWidth, eachRow * trackHeight, trackWidth - 4, trackHeight - 4, 'blue')
+        drawRect(canvasContext, eachCol * trackWidth, eachRow * trackHeight, trackWidth - 4, trackHeight - 4, 'blue')
       }
     }
   }
-}
-
-function drawText (text, x, y, color) {
-  canvasContext.fillStyle = color
-  canvasContext.font = '20px helvetica'
-  canvasContext.fillText(text, x, y)
 }

@@ -55,7 +55,7 @@ export class Paddle {
 
   draw () {
     const { x, y , w, h} = this
-    drawRect(x, y, w, h, this.color)
+    drawRect(canvasContext, x, y, w, h, this.color)
   }
 
 }

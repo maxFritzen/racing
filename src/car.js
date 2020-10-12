@@ -1,5 +1,4 @@
 import { 
-  drawCircle, 
   tracks, 
   trackCols, 
   trackRows, 
@@ -127,7 +126,7 @@ export class Car {
   
     var carGridCol = Math.floor(this.x / trackWidth);
     var carGridRow = Math.floor(this.y / trackHeight);
-    var gridIndexUnderCar = colRowIndex(carGridCol, carGridow);
+    var gridIndexUnderCar = colRowIndex(carGridCol, carGridRow);
 
     if(carGridCol >= 0 && carGridCol < trackCols &&
       carGridRow >= 0 && carGridRow < trackRows) {
