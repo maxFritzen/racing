@@ -1,5 +1,5 @@
 import { Car } from './car.js'
-import { drawRect } from './common-graphics.js'
+import { drawRect, drawText } from './common-graphics.js'
 
 let canvas, canvasContext
 export var fps = 30
@@ -64,6 +64,8 @@ export const road = 0;
   canvasContext = canvas.getContext('2d');
   trackCols = canvas.width / trackWidth;
   // car1 = new Car(0, 0, 10, 'white', canvas)
+  drawRect(canvasContext, 0, 0, canvas.width, canvas.height, 'black')
+  drawText(canvasContext, 'Loading...', canvas.width / 2 - 60, canvas.height / 2, 'white')
   image.onload = () => {
     console.log('imageloaded')
     imageLoaded = true
@@ -76,11 +78,13 @@ export const road = 0;
       })
     }
     console.log(carSprites)
+
     setCar()
+    setInterval(updateAll, 1000 / fps);
+    
   }
   image.src = 'src/cars_racer.svg'
 
-  setInterval(updateAll, 1000 / fps);
   // Good for debugging position
   // canvas.addEventListener('mousemove', updateMouseMove)
   // window.addEventListener('keydown', keyDownDebug)
