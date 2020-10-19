@@ -39,6 +39,9 @@ export class Car {
     this.reverseSpeed = 0.1
     this.brakeSpeed = 0.9
     this.turnRate = 0.2
+
+    this.harderToSteerSpeed = 3
+    this.minimumSteerSpeed = 0.5
   }
 
   move () {
@@ -53,20 +56,18 @@ export class Car {
     }
 
     if (this.steerLeft) {
-      
-      if (this.speed > 3) {
-        this.angle -= this.turnRate / (this.speed / 4)
-        
-      } else if (this.speed !== 0) {
-        this.angle -= this.turnRate
-      }
-    
+        if (this.speed > this.harderToSteerSpeed) {
+          this.angle -= this.turnRate / (this.speed / 4)
+          
+        } else if (Math.abs(this.speed) > this.minimumSteerSpeed) {
+          this.angle -= this.turnRate
+        }
     }
 
     if (this.steerRight) {
-      if (this.speed > 3) {
+      if (this.speed > this.harderToSteerSpeed) {
         this.angle += this.turnRate / (this.speed / 4)
-      } else if (this.speed !== 0) {
+      } else if (Math.abs(this.speed) > this.minimumSteerSpeed) {
         this.angle += this.turnRate
       }
       
