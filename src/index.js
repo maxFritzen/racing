@@ -165,11 +165,18 @@ function draw () {
 }
 
 function drawTracks() {
+  let drawTileX = 0
+  let drawTileY = 0
+  const width = trackWidth - 4
+  const height = trackHeight - 4
   for (let eachRow = 0; eachRow < trackRows; eachRow++) {
     for (let eachCol = 0; eachCol < trackCols; eachCol++) {
       if (tracks[colRowIndex(eachCol, eachRow)] === wall) {
-        drawRect(canvasContext, eachCol * trackWidth, eachRow * trackHeight, trackWidth - 4, trackHeight - 4, 'blue')
+        drawRect(canvasContext, drawTileX, drawTileY, width, height, 'blue')
       }
+      drawTileX += trackWidth
     }
+    drawTileY += trackHeight
+    drawTileX = 0
   }
 }
