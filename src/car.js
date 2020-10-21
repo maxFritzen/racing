@@ -42,6 +42,20 @@ export class Car {
 
     this.harderToSteerSpeed = 3
     this.minimumSteerSpeed = 0.5
+
+    this.controlKeyGas = undefined
+    this.controlKeyRight = undefined
+    this.controlKeyReverse = undefined
+    this.controlKeyLeft = undefined
+    this.controlKeyBrake = undefined
+  }
+
+  setUpControls (gas, right, reverse, left, brake) {
+    this.controlKeyGas = gas
+    this.controlKeyRight = right
+    this.controlKeyReverse = reverse
+    this.controlKeyLeft = left
+    this.controlKeyBrake = brake
   }
 
   move () {
@@ -86,41 +100,30 @@ export class Car {
     document.addEventListener('keyup', this.keyUp)
   }
 
-  keyDown = (e) => {
-    if (e.key === 'ArrowUp') {
-      this.drive = true
+  keySet (e, setTo) {
+    if (e.key === this.controlKeyGas) {
+      this.drive = setTo
     }
-    if (e.key === 'ArrowDown') {
-      this.reverse = true
+    if (e.key === this.controlKeyRight) {
+      this.steerRight = setTo
     }
-    if (e.key === 'ArrowLeft') {
-      this.steerLeft = true
+    if (e.key === this.controlKeyReverse) {
+      this.reverse = setTo
     }
-    if (e.key === 'ArrowRight') {
-      this.steerRight = true
+    if (e.key === this.controlKeyLeft) {
+      this.steerLeft = setTo
     }
-
-    if (e.code === 'Space') {
-      this.brake = true
+    if (e.key === this.controlKeyBrake) {
+      this.brake = setTo
     }
   }
 
+  keyDown = (e) => {
+    this.keySet(e, true)
+  }
+
   keyUp = (e) => {
-    if (e.key === 'ArrowUp') {
-      this.drive = false
-    }
-    if (e.key === 'ArrowDown') {
-      this.reverse = false
-    }
-    if (e.key === 'ArrowLeft') {
-      this.steerLeft = false
-    }
-    if (e.key === 'ArrowRight') {
-      this.steerRight = false
-    } 
-    if (e.code === 'Space') {
-      this.brake = false
-    }
+    this.keySet(e, false)
   }
 
   trackHandler () {

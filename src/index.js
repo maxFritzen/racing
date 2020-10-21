@@ -79,7 +79,10 @@ export const road = 0;
     }
     console.log(carSprites)
 
-    setCar()
+    const {x, y} = getCarStartPos()
+    car1 = new Car(x, y, 20, 40, 'white', canvas, carSprites[0])
+    car1.addKeyListeners()
+    car1.setUpControls('ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' ')
     setInterval(updateAll, 1000 / fps);
     
   }
@@ -94,7 +97,7 @@ function keyDownDebug (e) {
   console.log(e)
   if (e.key === 'd') {
     console.log('tracks:', tracks)
-    setCar()
+    getCarStartPos()
   }
   
 }
@@ -116,16 +119,15 @@ export function colRowIndex (col, row) {
   return col + trackCols * row
 }
 
-function setCar () {
+function getCarStartPos () {
   for (let eachRow = 0; eachRow < trackRows; eachRow++) {
     for (let eachCol = 0; eachCol < trackCols; eachCol++) {
       let index = colRowIndex(eachCol, eachRow)
       if (tracks[index] === playerStart) {
         const x = eachCol * trackWidth
         const y = eachRow * trackHeight
-        car1 = new Car(x, y, 20, 40, 'white', canvas, carSprites[0])
-        car1.addKeyListeners()
         tracks[index] = 0
+        return { x, y }
       }
     }
   }
