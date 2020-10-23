@@ -18,8 +18,7 @@ let imageLoaded = false
 const carSprites = []
 const carSpriteWidth = 200
 const carSpriteHeight = 500
-
-export const tracks = [
+const levelOne = [
   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
   1,1,0,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,
   1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,
@@ -36,6 +35,7 @@ export const tracks = [
   1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,
   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 ];
+export const tracks = [...levelOne];
 
 export const playerStart = 2
 export const wall = 1
