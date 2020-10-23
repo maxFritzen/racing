@@ -3,7 +3,6 @@ import { drawRect, drawText } from './common-graphics.js'
 
 let canvas, canvasContext
 export var fps = 30
-let car1
 let objects = [];
 
 let mouseX = 0;
@@ -30,9 +29,9 @@ export const tracks = [
   1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
   1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
   1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
+  1,1,0,0,2,0,0,2,0,0,0,0,0,0,0,0,0,1,1,1,
   1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
-  1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
-  1,1,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
+  1,1,0,0,2,0,0,2,0,0,0,0,0,0,0,0,0,1,1,1,
   1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
   1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,
   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
@@ -79,10 +78,12 @@ export const road = 0;
     }
     console.log(carSprites)
 
-    const {x, y} = getCarStartPos()
-    car1 = new Car(x, y, 20, 40, 'white', canvas, carSprites[0])
-    car1.addKeyListeners()
-    car1.setUpControls('ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' ')
+    
+    const car1 = setUpCar(['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' '], carSprites[0])
+    const car2 = setUpCar(['w', 'd', 's', 'a', 'q'], carSprites[1])
+    const car3 = setUpCar(['u', 'k', 'j', 'h', 'y'], carSprites[2])
+    const car4 = setUpCar(['t', 'h', 'g', 'f', 'r'], carSprites[3])
+    objects = [car1, car2, car3, car4]
     setInterval(updateAll, 1000 / fps);
     
   }
@@ -92,6 +93,15 @@ export const road = 0;
   // canvas.addEventListener('mousemove', updateMouseMove)
   // window.addEventListener('keydown', keyDownDebug)
 })(document)
+
+const setUpCar = (controls, sprite) => {
+  const {x, y} = getCarStartPos()
+  const car = new Car(x, y, 20, 40, 'white', canvas, sprite)
+  car.addKeyListeners()
+  car.setUpControls(...controls)
+
+  return car
+}
 
 function keyDownDebug (e) {
   console.log(e)
@@ -156,13 +166,22 @@ return a.y >= bTopEdgeY && // below the top of b
 }
 
 function update () {
-  car1.update()
+  objects.forEach((obj) => {
+    obj.update()
+  })
+  // car1.update()
+  // car2.update()
 }
 
 function draw () {
   drawRect(canvasContext,0, 0, canvas.width, canvas.height, 'black')
   drawTracks()
-  car1.draw()
+
+  objects.forEach((obj) => {
+    obj.draw()
+  })
+  // car1.draw()
+  // car2.draw()
   // drawText(`x: ${mouseX}, y: ${mouseY}`, 50, 50, 'green')
 }
 
