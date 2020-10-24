@@ -6,11 +6,15 @@ import {
   trackHeight, 
   trackWidth, 
   topGap,
-  trackHit
+  trackHit,
+  wall,
+  goal,
+  win
  } from './index.js';
 
 export class Car {
-  constructor (x, y, w, h, color = 'white', canvas, sprite) {
+  constructor (x, y, w, h, color = 'white', canvas, sprite, name) {
+    this.name = name
     this.startX = x
     this.startY = y
     this.x = x
@@ -134,14 +138,18 @@ export class Car {
 
     if(carGridCol >= 0 && carGridCol < trackCols &&
       carGridRow >= 0 && carGridRow < trackRows) {
+      const gridUnit = tracks[gridIndexUnderCar]
+      if(gridUnit === wall) { // Hit a wall
 
-      if(tracks[gridIndexUnderCar]) { // Hit a wall
         this.x -= Math.cos(this.angle) * this.speed;
 
         this.y -= Math.sin(this.angle) * this.speed;
         this.speed *=-1
         // trackHit(brickIndexUnderCar)
-      } 
+      }
+      if (gridUnit === goal) {
+        win(this.name)
+      }
     } 
   }
 

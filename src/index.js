@@ -28,15 +28,16 @@ const levelOne = [
   1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
   1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
   1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
-  1,1,0,0,2,0,0,2,0,0,0,0,0,0,0,0,0,1,1,1,
-  1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
-  1,1,0,0,2,0,0,2,0,0,0,0,0,0,0,0,0,1,1,1,
+  1,1,0,0,2,0,0,2,0,0,0,0,3,0,0,0,0,1,1,1,
+  1,1,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,1,1,1,
+  1,1,0,0,2,0,0,2,0,0,0,0,3,0,0,0,0,1,1,1,
   1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
   1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,
   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 ];
-export const tracks = [...levelOne];
+export let tracks = [];
 
+export const goal = 3
 export const playerStart = 2
 export const wall = 1
 export const road = 0;
@@ -77,13 +78,9 @@ export const road = 0;
       })
     }
     console.log(carSprites)
-
+    reset()
     
-    const car1 = setUpCar(['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' '], carSprites[0])
-    const car2 = setUpCar(['w', 'd', 's', 'a', 'q'], carSprites[1])
-    const car3 = setUpCar(['u', 'k', 'j', 'h', 'y'], carSprites[2])
-    const car4 = setUpCar(['t', 'h', 'g', 'f', 'r'], carSprites[3])
-    objects = [car1, car2, car3, car4]
+    
     setInterval(updateAll, 1000 / fps);
     
   }
@@ -94,13 +91,25 @@ export const road = 0;
   // window.addEventListener('keydown', keyDownDebug)
 })(document)
 
-const setUpCar = (controls, sprite) => {
+const setUpCar = (controls, sprite, name) => {
   const {x, y} = getCarStartPos()
-  const car = new Car(x, y, 20, 40, 'white', canvas, sprite)
+  const car = new Car(x, y, 20, 40, 'white', canvas, sprite, name)
   car.addKeyListeners()
   car.setUpControls(...controls)
 
   return car
+}
+export const win = (name) => {
+  console.log(name + ' wins!')
+  reset()
+}
+const reset = () => {
+  tracks = [ ...levelOne ]
+  const car1 = setUpCar(['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' '], carSprites[0], 'p1')
+  const car2 = setUpCar(['w', 'd', 's', 'a', 'q'], carSprites[1], 'p2')
+  const car3 = setUpCar(['u', 'k', 'j', 'h', 'y'], carSprites[2], 'p3')
+  const car4 = setUpCar(['t', 'h', 'g', 'f', 'r'], carSprites[3], 'p4')
+  objects = [car1, car2, car3, car4]
 }
 
 function keyDownDebug (e) {
@@ -192,8 +201,12 @@ function drawTracks() {
   const height = trackHeight - 4
   for (let eachRow = 0; eachRow < trackRows; eachRow++) {
     for (let eachCol = 0; eachCol < trackCols; eachCol++) {
-      if (tracks[colRowIndex(eachCol, eachRow)] === wall) {
+      const gridUnit = tracks[colRowIndex(eachCol, eachRow)]
+      if (gridUnit === wall) {
         drawRect(canvasContext, drawTileX, drawTileY, width, height, 'blue')
+      }
+      if (gridUnit === goal) {
+        drawRect(canvasContext, drawTileX, drawTileY, width, height, 'red')
       }
       drawTileX += trackWidth
     }
